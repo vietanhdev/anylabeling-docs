@@ -10,7 +10,7 @@ Loading custom models will enable you to use your own models for auto labeling. 
 
 ### 1. Prepare your model(s)
 
-Convert your model(s) into corresponding format(s) supported by **AnyLabeling**. The supported format for YOLOv5, YOLOv8 and SegmentAnything is ONNX.
+Convert your model(s) into corresponding format(s) supported by **AnyLabeling**. The supported format for YOLOv8 and all Segment Anything variants (SAM, SAM2, SAM2.1, SAM3) is ONNX.
 
 - Convert YOLOv5 to ONNX: [https://docs.ultralytics.com/yolov5/tutorials/model_export/#formats](https://docs.ultralytics.com/yolov5/tutorials/model_export/#formats). Note: The sample models are converted with YOLOv5 v6.2. Other versions may not work.
 - Convert YOLOv8 to ONNX: [https://github.com/ultralytics/ultralytics](https://github.com/ultralytics/ultralytics).
@@ -22,7 +22,7 @@ Convert your model(s) into corresponding format(s) supported by **AnyLabeling**.
 
 Create a model config file `config.yaml` in YAML format in the same folder with models. The config file needs to follow the formats below:
 
-**SegmentAnything:**
+**Segment Anything (SAM / SAM2 / SAM2.1):**
 
 ```yaml
 type: segment_anything
@@ -34,6 +34,24 @@ input_size: 1024
 max_height: 682
 max_width: 1024
 ```
+
+**Segment Anything 3 (SAM 3) — text-prompt support:**
+
+SAM 3 requires an additional `language_encoder_path` field pointing to the CLIP-based language encoder ONNX model. Use `input_size: 1008` (SAM 3 uses a different resolution than SAM/SAM2).
+
+```yaml
+type: segment_anything
+name: sam3_vit_h_custom
+display_name: Segment Anything 3 (ViT-H)
+encoder_model_path: sam3_image_encoder.onnx
+decoder_model_path: sam3_decoder.onnx
+language_encoder_path: sam3_language_encoder.onnx
+input_size: 1008
+max_height: 1008
+max_width: 1008
+```
+
+> **Note:** SAM 3 ONNX models can be exported using [samexporter](https://github.com/vietanhdev/samexporter) or downloaded from [Hugging Face](https://huggingface.co/vietanhdev/segment-anything-3-onnx-models). When a `language_encoder_path` is present, the UI shows a text prompt field for open-vocabulary detection.
 
 **YOLOv5:**
 

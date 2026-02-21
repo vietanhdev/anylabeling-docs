@@ -23,7 +23,11 @@
 **Features:**
 
 - [x] Image annotation for polygon, rectangle, circle, line and point.
-- [x] Auto-labeling with YOLOv5 and Segment Anything.
+- [x] Auto-labeling with **YOLOv8** (object detection).
+- [x] Auto-labeling with **Segment Anything** family:
+  - **SAM** (ViT-B / ViT-L / ViT-H) and **MobileSAM**
+  - **SAM 2** and **SAM 2.1** (Hiera-Tiny / Small / Base+ / Large)
+  - **SAM 3** (ViT-H) — open-vocabulary segmentation with text prompts
 - [x] Text detection, recognition and KIE (Key Information Extraction) labeling.
 - [x] Multiple languages availables: English, Vietnamese, Chinese.
 
@@ -39,20 +43,20 @@
 
 ### 2. Install from Pypi
 
-- Requirements: Python >= 3.8, &lt;= 3.10.
+- Requirements: Python 3.10+. Recommended: Python 3.12.
 - Recommended: [Miniconda/Anaconda](https://docs.conda.io/en/latest/miniconda.html).
 
 - Create environment:
 
 ```bash
-conda create -n anylabeling python=3.8
+conda create -n anylabeling python=3.12
 conda activate anylabeling
 ```
 
-- **(For macOS only)** Install PyQt5 using Conda:
+- **(For macOS only)** Install PyQt6 using Conda:
 
 ```bash
-conda install -c conda-forge pyqt==5.15.7
+conda install -c conda-forge pyqt=6
 ```
 
 - Install anylabeling:

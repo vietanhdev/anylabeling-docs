@@ -1,14 +1,18 @@
 import Youtube from "components/video/youtube.jsx";
 
-# Auto labeling with Segment Anything (SAM + SAM2 + MobileSAM)
+# Auto labeling with Segment Anything (SAM / SAM2 / SAM2.1 / SAM3 / MobileSAM)
 
-There are three variants of Segment Anything Model: **SAM**, **SAM2**, and **MobileSAM** supported in AnyLabeling:
+AnyLabeling supports the full Segment Anything family:
 
-- [Segment Anything Model](https://ai.facebook.com/blog/segment-anything-foundation-model-image-segmentation/) is new segmentation model from Meta. Trained with 11M images and 1B segmentation masks, it can segment objects in the image without being trained on specific objects. For this reason, Segment Anything is a good candidate for auto labeling, even for new objects.
+- [Segment Anything Model (SAM)](https://ai.facebook.com/blog/segment-anything-foundation-model-image-segmentation/) is a foundation segmentation model from Meta. Trained with 11M images and 1B segmentation masks, it can segment objects in the image without being trained on specific objects. For this reason, Segment Anything is a good candidate for auto labeling, even for new objects. Available as **ViT-B**, **ViT-L**, and **ViT-H** (and quantized variants).
 
-- [Segment Anything Model 2 (SAM 2)](https://ai.meta.com/blog/segment-anything-2/) is Meta's latest advancement in computer vision, building upon the success of its predecessor. This foundation model is designed to tackle promptable visual segmentation in both images and videos, representing a significant leap forward in visual understanding and processing.
+- [Segment Anything Model 2 (SAM 2)](https://ai.meta.com/blog/segment-anything-2/) is Meta's advancement in computer vision, building upon the success of its predecessor. This foundation model is designed to tackle promptable visual segmentation in both images and videos. Available in **Hiera-Tiny**, **Hiera-Small**, **Hiera-Base+**, and **Hiera-Large** sizes.
 
-- [MobileSAM](https://github.com/ChaoningZhang/MobileSAM) is the variant introduced in [Faster Segment Anything: Towards Lightweight SAM for Mobile Applications](https://arxiv.org/abs/2312.09579.pdf).
+- **Segment Anything Model 2.1 (SAM 2.1)** is an improved version of SAM 2 with better accuracy and robustness. Available in the same four sizes as SAM 2.
+
+- **Segment Anything Model 3 (SAM 3)** extends the SAM family with open-vocabulary, text-driven segmentation. In addition to point and rectangle prompts, SAM 3 accepts **text prompts** (e.g., "truck", "person") to detect and segment objects without any prior training on those classes. Available as **ViT-H**.
+
+- [MobileSAM](https://github.com/ChaoningZhang/MobileSAM) is the lightweight variant introduced in [Faster Segment Anything: Towards Lightweight SAM for Mobile Applications](https://arxiv.org/abs/2312.09579.pdf). Optimized for speed on CPU.
 
 ## Video for AnyLabeling v0.2.6
 
@@ -21,16 +25,36 @@ There are three variants of Segment Anything Model: **SAM**, **SAM2**, and **Mob
   autoPlay={true}
 />
 
+## Supported Models
+
+| Model | Prompt Types | Notes |
+|-------|-------------|-------|
+| SAM ViT-B / ViT-L / ViT-H | Point, Rectangle | Original SAM; ViT-H is most accurate |
+| SAM ViT-B Quant / ViT-L Quant / ViT-H Quant | Point, Rectangle | Quantized (faster, smaller) variants |
+| MobileSAM | Point, Rectangle | Lightweight; fast on CPU |
+| SAM 2 Hiera-Tiny / Small / Base+ / Large | Point, Rectangle | Meta SAM 2 |
+| SAM 2.1 Hiera-Tiny / Small / Base+ / Large | Point, Rectangle | Improved SAM 2 |
+| SAM 3 ViT-H | **Text**, Point, Rectangle | Open-vocabulary; text drives detection |
+
+All models are downloaded automatically on first use from Hugging Face.
+
 ## Instructions
 
 ![Auto labeling with Segment Anything Model](/images/segment-anything-tools.svg)
 
 - Select **Brain Button** on the left side to activate auto labeling.
-- Select one of the **Segment Anything Models** from the dropdown menu **Model**. The model accuracy and speed are different depending on the model. The **Segment Anything Model (ViT-B)** is the fastest and the least accurate. The **Segment Anything Model (ViT-H)** is the slowest and the most accurate. **Quant** indicates the quantization of the model.
+- Select one of the **Segment Anything Models** from the dropdown menu **Model**. The model accuracy and speed differ depending on the variant:
+    - **MobileSAM** — fastest, lowest accuracy
+    - **SAM ViT-B** — fast, good for most use cases
+    - **SAM ViT-H** — slowest, highest accuracy
+    - **SAM 2 / SAM 2.1** — improved segmentation quality
+    - **SAM 3** — open-vocabulary, supports text prompts
+    - **Quant** suffix indicates a quantized model (faster, smaller file size)
 - Use **Auto segmentation marking tools** to mark the object.
     + **+Point:** Add a point that belongs to the object.
     + **-Point:** Remove a point that you want to exclude from the object.
     + **+Rect:** Draw a rectangle that contains the object. Segment Anything will automatically segment the object.
+    + **Text (SAM 3 only):** Type a text description (e.g., "truck") to detect and segment matching objects automatically.
     + **Clear:** Clear all auto segmentation markings.
     + **Finish Object (f):** Finish the current marking. After finishing the object, you can enter the label name and save the object.
 
