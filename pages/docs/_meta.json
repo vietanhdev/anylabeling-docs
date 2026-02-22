@@ -11,6 +11,7 @@
   },
   "model-inference": "Model Inference",
   "sam": "Segment Anything Model (SAM)",
+  "samexporter": "SAMExporter (ONNX Export)",
   "yolo": "YOLO Models",
   "gpu": "GPU Acceleration",
   "custom-models": "Loading Custom Models",

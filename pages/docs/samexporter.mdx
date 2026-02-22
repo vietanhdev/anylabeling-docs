@@ -1,0 +1,314 @@
+# SAMExporter — Export SAM Models to ONNX
+
+**SAMExporter** is the tool used to export the Segment Anything family of models into ONNX format for deployment in AnyLabeling and other applications. It supports the full model family: SAM, MobileSAM, SAM2, SAM2.1, and SAM3.
+
+- GitHub: [vietanhdev/samexporter](https://github.com/vietanhdev/samexporter)
+- PyPI: [pypi.org/project/samexporter](https://pypi.org/project/samexporter/)
+- Pre-exported SAM3 ONNX models: [vietanhdev/segment-anything-3-onnx-models](https://huggingface.co/vietanhdev/segment-anything-3-onnx-models)
+
+---
+
+## Supported Models
+
+| Model | Prompt Types | Speed | Accuracy |
+|-------|-------------|-------|----------|
+| SAM ViT-B | Point, Rectangle | Fast | Good |
+| SAM ViT-L | Point, Rectangle | Medium | Better |
+| SAM ViT-H | Point, Rectangle | Slow | Best |
+| SAM ViT-B/L/H (quantized) | Point, Rectangle | Faster | Slightly lower |
+| MobileSAM | Point, Rectangle | Fastest | Lower |
+| SAM2 Hiera-Tiny | Point, Rectangle | Fast | Good |
+| SAM2 Hiera-Small | Point, Rectangle | Medium | Better |
+| SAM2 Hiera-Base+ | Point, Rectangle | Medium | Better |
+| SAM2 Hiera-Large | Point, Rectangle | Slow | Best SAM2 |
+| SAM2.1 Tiny / Small / Base+ / Large | Point, Rectangle | Same as SAM2 | Improved SAM2 |
+| SAM3 ViT-H | **Text**, Point, Rectangle | Slow | Open-vocabulary |
+
+---
+
+## Installation
+
+Requires Python **3.11+**.
+
+```bash
+pip install torch==2.10.0 torchvision==0.25.0 --index-url https://download.pytorch.org/whl/cpu
+pip install samexporter
+```
+
+For model export with ONNX simplification (Linux/macOS or Windows with Long Path support enabled):
+
+```bash
+pip install "samexporter[export]"
+```
+
+> **Note:** The `[export]` extra installs `onnxsim` which requires building from source on Windows. It is only needed when exporting models with `--simplify`. Inference from pre-exported ONNX models does not need it.
+
+---
+
+## SAM / MobileSAM
+
+### Download checkpoints
+
+```text
+original_models/
+  sam_vit_b_01ec64.pth   → https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth
+  sam_vit_l_0b3195.pth   → https://dl.fbaipublicfiles.com/segment_anything/sam_vit_l_0b3195.pth
+  sam_vit_h_4b8939.pth   → https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth
+  mobile_sam.pt          → https://github.com/ChaoningZhang/MobileSAM (weights/)
+```
+
+### Export
+
+```bash
+# Export encoder (example: ViT-H)
+python -m samexporter.export_encoder \
+    --checkpoint original_models/sam_vit_h_4b8939.pth \
+    --output output_models/sam_vit_h_4b8939.encoder.onnx \
+    --model-type vit_h \
+    --quantize-out output_models/sam_vit_h_4b8939.encoder.quant.onnx \
+    --use-preprocess
+
+# Export decoder
+python -m samexporter.export_decoder \
+    --checkpoint original_models/sam_vit_h_4b8939.pth \
+    --output output_models/sam_vit_h_4b8939.decoder.onnx \
+    --model-type vit_h \
+    --quantize-out output_models/sam_vit_h_4b8939.decoder.quant.onnx \
+    --return-single-mask
+```
+
+**Batch convert all SAM models:**
+
+```bash
+bash convert_all_meta_sam.sh
+bash convert_mobile_sam.sh
+```
+
+### Inference
+
+```bash
+python -m samexporter.inference \
+    --encoder_model output_models/sam_vit_h_4b8939.encoder.onnx \
+    --decoder_model output_models/sam_vit_h_4b8939.decoder.onnx \
+    --image images/truck.jpg \
+    --prompt images/truck_prompt.json \
+    --output output_images/truck.png \
+    --show
+```
+
+![SAM1 truck inference result](https://raw.githubusercontent.com/vietanhdev/samexporter/main/sample_outputs/truck.png)
+
+---
+
+## SAM2 / SAM2.1
+
+### Download checkpoints
+
+```bash
+cd original_models && bash download_sam2.sh
+```
+
+### Install SAM2 PyTorch package
+
+```bash
+pip install git+https://github.com/facebookresearch/segment-anything-2.git
+```
+
+### Export
+
+```bash
+# SAM2 Tiny
+python -m samexporter.export_sam2 \
+    --checkpoint original_models/sam2_hiera_tiny.pt \
+    --output_encoder output_models/sam2_hiera_tiny.encoder.onnx \
+    --output_decoder output_models/sam2_hiera_tiny.decoder.onnx \
+    --model_type sam2_hiera_tiny
+
+# SAM2.1 Tiny
+python -m samexporter.export_sam2 \
+    --checkpoint original_models/sam2.1_hiera_tiny.pt \
+    --output_encoder output_models/sam2.1_hiera_tiny.encoder.onnx \
+    --output_decoder output_models/sam2.1_hiera_tiny.decoder.onnx \
+    --model_type sam2.1_hiera_tiny
+```
+
+**Batch convert all SAM2 / SAM2.1 variants:**
+
+```bash
+bash convert_all_meta_sam2.sh
+```
+
+### Inference
+
+```bash
+python -m samexporter.inference \
+    --encoder_model output_models/sam2_hiera_tiny.encoder.onnx \
+    --decoder_model output_models/sam2_hiera_tiny.decoder.onnx \
+    --image images/truck.jpg \
+    --prompt images/truck_prompt.json \
+    --sam_variant sam2 \
+    --output output_images/sam2_truck.png \
+    --show
+```
+
+![SAM2 truck inference result](https://raw.githubusercontent.com/vietanhdev/samexporter/main/sample_outputs/sam2_truck.png)
+
+> **Note:** SAM2.1 uses the same inference command (`--sam_variant sam2`) as SAM2. The only difference is the model files.
+
+---
+
+## SAM3 — Open-Vocabulary Segmentation
+
+SAM3 extends the SAM family with text-driven, open-vocabulary segmentation. It accepts **natural-language text prompts** (e.g., "truck", "person on a bike") to detect and segment objects without any class-specific training.
+
+SAM3 consists of **three separate ONNX models** that run in sequence:
+
+```
+Image → [Image Encoder] → image features ─┐
+Text  → [Language Encoder] → text features ┼→ [Decoder] → boxes + scores + masks
+Prompt (box/point) ────────────────────────┘
+```
+
+### Pre-exported ONNX models
+
+Pre-exported models are available on HuggingFace and are downloaded automatically when using AnyLabeling:
+
+```
+vietanhdev/segment-anything-3-onnx-models
+├── sam3_image_encoder.onnx   + sam3_image_encoder.onnx.data   (~1.8 GB)
+├── sam3_language_encoder.onnx + sam3_language_encoder.onnx.data (~1.6 GB)
+└── sam3_decoder.onnx          + sam3_decoder.onnx.data         (~116 MB)
+```
+
+### Export from PyTorch (optional)
+
+Only needed if you want to re-export the models yourself. Requires the `sam3` git submodule.
+
+```bash
+git submodule update --init sam3
+pip install osam  # CLIP tokenizer for SAM3
+python -m samexporter.export_sam3 --output_dir output_models/sam3 --opset 18
+```
+
+### Inference
+
+Always pass `--text_prompt` when running SAM3 inference. Without it the model defaults to a visual (non-text) token and may produce zero detections.
+
+**Text-only** (finds all matching objects):
+
+```bash
+python -m samexporter.inference \
+    --sam_variant sam3 \
+    --encoder_model output_models/sam3/sam3_image_encoder.onnx \
+    --decoder_model output_models/sam3/sam3_decoder.onnx \
+    --language_encoder_model output_models/sam3/sam3_language_encoder.onnx \
+    --image images/truck.jpg \
+    --prompt images/truck_sam3.json \
+    --text_prompt "truck" \
+    --output output_images/truck_sam3.png \
+    --show
+```
+
+**Text + rectangle** (text drives detection, rectangle refines region):
+
+```bash
+python -m samexporter.inference \
+    --sam_variant sam3 \
+    --encoder_model output_models/sam3/sam3_image_encoder.onnx \
+    --decoder_model output_models/sam3/sam3_decoder.onnx \
+    --language_encoder_model output_models/sam3/sam3_language_encoder.onnx \
+    --image images/truck.jpg \
+    --prompt images/truck_sam3_box.json \
+    --text_prompt "truck" \
+    --output output_images/truck_sam3_box.png \
+    --show
+```
+
+**Text + point:**
+
+```bash
+python -m samexporter.inference \
+    --sam_variant sam3 \
+    --encoder_model output_models/sam3/sam3_image_encoder.onnx \
+    --decoder_model output_models/sam3/sam3_decoder.onnx \
+    --language_encoder_model output_models/sam3/sam3_language_encoder.onnx \
+    --image images/truck.jpg \
+    --prompt images/truck_sam3_point.json \
+    --text_prompt "truck" \
+    --output output_images/truck_sam3_point.png \
+    --show
+```
+
+---
+
+## Prompt JSON format
+
+Each prompt file is a JSON array of mark objects:
+
+```json
+[
+  {"type": "point",     "data": [x, y],           "label": 1},
+  {"type": "rectangle", "data": [x1, y1, x2, y2]},
+  {"type": "text",      "data": "object description"}
+]
+```
+
+- `label: 1` — foreground point; `label: 0` — background point (negative)
+- `type: "text"` is for SAM3; use `--text_prompt` on the CLI for convenience
+
+---
+
+## Inference CLI reference
+
+```
+samexporter.inference
+
+  --encoder_model PATH           Image encoder ONNX model
+  --decoder_model PATH           Mask decoder ONNX model
+  --language_encoder_model PATH  Language encoder (SAM3 only)
+  --image PATH                   Input image (JPG, PNG, ...)
+  --prompt PATH                  Prompt JSON file
+  --output PATH                  Output image path
+  --sam_variant {sam,sam2,sam3}  Model family (default: sam)
+  --text_prompt TEXT             Text override for SAM3 (e.g. "truck")
+  --show                         Display result window
+```
+
+---
+
+## Architecture notes
+
+### SAM / MobileSAM
+- **Encoder**: Takes the full image, outputs a fixed 256-dim embedding. Run once per image.
+- **Decoder**: Takes the embedding + user prompt (points/boxes), outputs masks in real time.
+
+### SAM2 / SAM2.1
+- **Encoder**: Outputs three feature levels (`high_res_feats_0`, `high_res_feats_1`, `image_embedding`).
+- **Decoder**: Takes multi-scale features + prompt, outputs the best mask.
+
+### SAM3
+- **Image Encoder**: Input is raw uint8 `[3, 1008, 1008]`. Outputs 6 tensors (`vision_pos_enc_{0,1,2}`, `backbone_fpn_{0,1,2}`). Normalization is baked in.
+- **Language Encoder**: Input is CLIP tokens `[1, 32]` int64 (max 32 tokens). Outputs text attention mask, text memory, text embeddings.
+- **Decoder**: Accepts image features + language features + geometric prompt. Outputs `boxes (N,4)`, `scores (N,)`, `masks (N,1,H,W)` (boolean). All N detected objects are returned.
+
+---
+
+## Tips
+
+- Use **quantized** models (`*.quant.onnx`) for faster inference and smaller download size. Accuracy is only marginally reduced.
+- **MobileSAM** is the best choice for CPU-only environments with tight latency requirements.
+- **SAM2 / SAM2.1** outperform SAM1 on most benchmarks and are recommended for new deployments.
+- **SAM3** is uniquely suited for open-set detection tasks where you do not know the class list in advance.
+- The image encoder runs once per image. The lightweight decoder handles prompt changes interactively without re-encoding.
+
+---
+
+## Running tests
+
+```bash
+pip install pytest
+cd samexporter
+pytest tests/
+```
+
+All 14 unit tests run without requiring ONNX model files (sessions are mocked).
