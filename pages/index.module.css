@@ -3,14 +3,14 @@
   font-size: 0.9em;
   padding: 1px 6px;
   border-radius: 0.375rem;
-  border: 1px solid #0077ff;
-  color: #0077ff;
+  border: 1px solid #0891b2;
+  color: #0e7490;
   font-weight: 600;
   cursor: default;
   user-select: none;
 }
 .file.active {
-  background-color: #0077ff;
+  background-color: #0891b2;
   color: white;
 }
 
@@ -28,26 +28,25 @@
   justify-content: center;
   margin: 0;
   padding: 1.5rem 1rem;
-  background: linear-gradient(27deg, #535353, #616161);
+  background: #27272a;
   color: #ffffff;
   border-radius: 0.375rem;
   font-weight: 300;
 }
 
 :global(.dark) .optimization {
-  background: linear-gradient(27deg, #535353, #616161);
+  background: #18181b;
 }
 
 a.cta {
   display: inline-block;
-  background: linear-gradient(to bottom, #238aff, #0077ff);
+  background: #0891b2;
   text-decoration: none;
   border-radius: 9999px;
   color: white;
   padding: 0.75rem 1.5rem;
   margin-top: 0.5rem;
-  text-shadow: 0 1px 1px #00387838;
-  box-shadow: 0 1px 2px #00295738;
+  box-shadow: 0 1px 2px rgb(8 145 178 / 25%);
   transition: all 0.2s ease;
   -webkit-user-drag: none;
   user-select: none;
@@ -61,11 +60,11 @@ a.cta:hover span {
   transform: translateX(3px);
 }
 a.cta:hover {
-  box-shadow: 0 5px 30px -10px #0078ffab;
-  filter: brightness(1.05);
+  background: #0e7490;
+  box-shadow: 0 8px 24px -12px rgb(8 145 178 / 65%);
 }
 a.cta:active {
-  box-shadow: 0 1px 3px #00295738;
+  box-shadow: 0 1px 3px rgb(8 145 178 / 25%);
   filter: brightness(0.95);
 }
 a.cta:active span {

@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --nextra-primary-hue: 196deg;
+  --nextra-primary-saturation: 90%;
+}
+
 body {
   font-feature-settings: 'rlig' 1, 'calt' 1;
 }

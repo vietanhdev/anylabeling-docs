@@ -115,25 +115,21 @@ const config: DocsThemeConfig = {
   },
   footer: {
     text: (
-      <div className="flex w-full flex-col items-center sm:items-start">
-        <div>
+      <div className="flex w-full flex-col items-center text-sm text-zinc-500 dark:text-zinc-400 sm:items-start">
+        <p className="m-0">
+          Built by{" "}
           <a
-            className="flex items-center gap-1 text-current"
+            className="font-medium text-zinc-700 no-underline transition-colors hover:text-cyan-700 dark:text-zinc-200 dark:hover:text-cyan-300"
             target="_blank"
             rel="noopener noreferrer"
             title="Neural Research Lab Website"
             href="https://www.nrl.ai"
           >
-            <div className="pt-0 mt-0">
-              Developed by{" "}
-              <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 text-bold">
-                Neural Research Lab
-              </span>
-              .
-            </div>
+            Neural Research Lab
           </a>
-        </div>
-        <p className="mt-2 text-xs">
+          .
+        </p>
+        <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-500">
           © {new Date().getFullYear()} The AnyLabeling Project.
         </p>
       </div>
