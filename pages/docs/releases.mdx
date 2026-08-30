@@ -1,6 +1,17 @@
 # Recent Releases
 
-## v0.4.42 — current stable release
+## v0.4.43 — current stable release
+
+[v0.4.43](https://github.com/vietanhdev/anylabeling/releases/tag/v0.4.43) improves recovery and annotation persistence:
+
+- Cleans up model workers after download or load errors so another model can be selected without restarting.
+- Skips invalid images during SAM preload instead of terminating the worker.
+- Persists grouping and ungrouping changes, marks the document dirty, and makes the operation undoable.
+- Closes JSON label files deterministically so Windows can immediately overwrite or delete them.
+- Uses a pinned absolute AnyLearning banner URL that renders correctly on PyPI.
+- Publishes six CPU/accelerated artifacts with SHA-256 digests and native-runner launch checks.
+
+## v0.4.42 — packaging validation
 
 [v0.4.42](https://github.com/vietanhdev/anylabeling/releases/tag/v0.4.42) replaced the affected v0.4.40 binaries and tightened release validation:
 
@@ -21,7 +32,7 @@ Avoid the v0.4.40 macOS and Linux artifacts. The v0.4.41 publication was cancell
 - Explicit selection with `ANYLABELING_DEVICE` and CPU fallback when a requested provider is unavailable.
 - Intel OpenVINO NPU and Qualcomm QNN/HTP provider options.
 
-See [Hardware Acceleration](./gpu) for installation and device selection. No binary artifacts were published for v0.4.39; use v0.4.42 or newer for installers containing this work.
+See [Hardware Acceleration](./gpu) for installation and device selection. No binary artifacts were published for v0.4.39; use v0.4.43 or newer for installers containing this work.
 
 ## v0.4.37–v0.4.38 — stability and model fixes
 
