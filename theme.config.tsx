@@ -3,29 +3,15 @@ import { useConfig } from "nextra-theme-docs";
 import { useRouter } from "next/router";
 
 const logo = (
-  <>
-    <div className="flex flex-row align-middle justify-center">
-      <img className="h-12 w-auto rounded-md" src="/logo.png"></img>
-      <h1 className="text-2xl ml-2 font-bold inline-block" style={{lineHeight: "3rem"}}>AnyLabeling</h1>
-    </div>
-    <style jsx>{`
-      span {
-        padding: 0.5rem 0.5rem 0.5rem 0;
-        mask-image: linear-gradient(
-          60deg,
-          black 25%,
-          rgba(0, 0, 0, 0.2) 50%,
-          black 75%
-        );
-        mask-size: 400%;
-        mask-position: 0%;
-      }
-      span:hover {
-        mask-position: 100%;
-        transition: mask-position 1s ease, -webkit-mask-position 1s ease;
-      }
-    `}</style>
-  </>
+  <span className="inline-flex items-center gap-2.5">
+    <img
+      className="h-8 w-8 shrink-0"
+      src="/anylabeling-logo.svg"
+      alt=""
+      aria-hidden="true"
+    />
+    <span className="text-lg font-semibold tracking-tight">AnyLabeling</span>
+  </span>
 );
 
 const config: DocsThemeConfig = {
