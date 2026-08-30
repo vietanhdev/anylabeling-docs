@@ -50,9 +50,9 @@ import docsCardDark from '../public/screenshot.png'
   <div className="content-container">
     <h1 className="headline">Effortless data labeling</h1>
     <p className="subtitle">With AI support from Segment Anything and YOLO models.</p>
-    <div className="flex flex-col items-center gap-4 max-w-2xl mt-6">
-      <a href="https://github.com/nrl-ai/anylearning-oss" target="_blank" rel="noopener noreferrer">
-        <img className="w-full rounded-2xl" src="https://raw.githubusercontent.com/nrl-ai/anylearning-oss/main/website/public/screenshot.png" alt="AnyLearning open-source offline AI platform" />
+    <div className="anylearning-callout">
+      <a className="anylearning-banner" href="https://github.com/nrl-ai/anylearning-oss" target="_blank" rel="noopener noreferrer" aria-label="Explore AnyLearning OSS on GitHub">
+        <img src="/anylearning-oss-banner.webp" alt="AnyLearning open-source offline AI platform" />
       </a>
     </div>
   </div>
@@ -67,15 +67,15 @@ import docsCardDark from '../public/screenshot.png'
     .features-container {
       margin: 8rem 0 0;
       padding: 4rem 0;
-      background-color: #f3f4f6;
-      border-bottom: 1px solid #e5e7eb;
+      background-color: #f4f4f5;
+      border-block: 1px solid #e4e4e7;
     }
     .features-container .content-container {
       margin-top: -8rem;
     }
     :global(.dark) .features-container {
-      background-color: #000;
-      border-bottom: 1px solid rgb(38,38,38);
+      background-color: #18181b;
+      border-color: #3f3f46;
     }
     .headline {
       display: inline-block;
@@ -100,6 +100,42 @@ import docsCardDark from '../public/screenshot.png'
       font-size: min(1.3rem, max(3.5vw, 1.2rem));
       font-feature-settings: initial;
       line-height: 1.6;
+    }
+    .anylearning-callout {
+      width: min(68rem, 100%);
+      margin-top: 2rem;
+    }
+    .anylearning-banner {
+      display: block;
+      overflow: hidden;
+      border: 1px solid #e4e4e7;
+      border-radius: 0.875rem;
+      background: #f4f4f5;
+      box-shadow: 0 1px 2px rgb(0 0 0 / 5%), 0 18px 40px -32px rgb(9 9 11 / 45%);
+      text-decoration: none;
+      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+    .anylearning-banner img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .anylearning-banner:hover {
+      transform: translateY(-2px);
+      border-color: rgb(8 145 178 / 55%);
+      box-shadow: 0 2px 4px rgb(0 0 0 / 6%), 0 22px 48px -32px rgb(8 145 178 / 38%);
+    }
+    .anylearning-banner:focus-visible {
+      outline: 2px solid rgb(8 145 178);
+      outline-offset: 3px;
+    }
+    :global(.dark) .anylearning-banner {
+      border-color: #3f3f46;
+      background: #18181b;
+      box-shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 18px 40px -30px rgb(0 0 0 / 80%);
+    }
+    :global(.dark) .anylearning-banner:hover {
+      border-color: rgb(34 211 238 / 50%);
     }
     .nextjs-link {
       color: currentColor;
@@ -229,6 +265,12 @@ import docsCardDark from '../public/screenshot.png'
       }
     }
     @media screen and (max-width: 640px) {
+      .anylearning-callout {
+        margin-top: 1.5rem;
+      }
+      .anylearning-banner {
+        border-radius: 0.75rem;
+      }
       :global(#search-card) {
         aspect-ratio: 5/3;
         justify-content: flex-start;
