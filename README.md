@@ -6,7 +6,7 @@ AnyLabeling combines image annotation tools with AI-assisted labeling from YOLO 
 
 ## Current release
 
-The current stable release is [v0.4.42](https://github.com/vietanhdev/anylabeling/releases/tag/v0.4.42). It provides tested CPU and accelerated binaries for Linux, Windows, and Apple Silicon macOS. Recent releases also added deterministic ONNX Runtime accelerator selection, CUDA runtime packaging, CoreML support, and opt-in DirectML, OpenVINO, TensorRT, and vendor NPU providers.
+The current stable release is [v0.4.43](https://github.com/vietanhdev/anylabeling/releases/tag/v0.4.43). It provides tested CPU and accelerated binaries for Linux, Windows, and Apple Silicon macOS, plus fixes for model-load recovery, SAM preload, grouped-shape persistence, and label-file handles. Recent releases also added deterministic ONNX Runtime accelerator selection, CUDA runtime packaging, CoreML support, and opt-in DirectML, OpenVINO, TensorRT, and vendor NPU providers.
 
 See the documentation for:
 
