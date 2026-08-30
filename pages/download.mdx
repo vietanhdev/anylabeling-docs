@@ -1,0 +1,149 @@
+---
+title: Download AnyLabeling
+---
+
+# Download AnyLabeling
+
+Get the current stable release, **v0.4.42**, for your platform. Choose CPU if you are unsure; choose Accelerated when you have the matching hardware.
+
+<div className="download-grid">
+  <section className="download-card">
+    <p className="platform">Windows x64</p>
+    <h2>Windows</h2>
+    <p>NVIDIA CUDA acceleration is included in the GPU build.</p>
+    <div className="actions">
+      <a className="primary" href="https://github.com/vietanhdev/anylabeling/releases/latest/download/AnyLabeling-Windows-CPU-x64.exe">Download CPU</a>
+      <a className="secondary" href="https://github.com/vietanhdev/anylabeling/releases/latest/download/AnyLabeling-Windows-GPU-x64.exe">Download GPU</a>
+    </div>
+  </section>
+
+  <section className="download-card">
+    <p className="platform">Linux x64</p>
+    <h2>Linux</h2>
+    <p>NVIDIA CUDA acceleration is included in the GPU build.</p>
+    <div className="actions">
+      <a className="primary" href="https://github.com/vietanhdev/anylabeling/releases/latest/download/AnyLabeling-Linux-CPU-x64">Download CPU</a>
+      <a className="secondary" href="https://github.com/vietanhdev/anylabeling/releases/latest/download/AnyLabeling-Linux-GPU-x64">Download GPU</a>
+    </div>
+  </section>
+
+  <section className="download-card">
+    <p className="platform">Apple Silicon</p>
+    <h2>macOS</h2>
+    <p>CoreML acceleration is included in the GPU archive.</p>
+    <div className="actions">
+      <a className="primary" href="https://github.com/vietanhdev/anylabeling/releases/latest/download/AnyLabeling-macOS-CPU.zip">Download CPU</a>
+      <a className="secondary" href="https://github.com/vietanhdev/anylabeling/releases/latest/download/AnyLabeling-macOS-GPU.zip">Download CoreML</a>
+    </div>
+  </section>
+</div>
+
+<div className="release-note">
+  <strong>Validated release.</strong> All six v0.4.42 artifacts were checksum-verified and launch-tested on their target operating systems. Avoid the superseded v0.4.40 macOS and Linux artifacts.
+</div>
+
+## Install with Python
+
+Python 3.11 or newer is required; Python 3.12 is recommended. Use a dedicated environment.
+
+```bash
+conda create -n anylabeling python=3.12
+conda activate anylabeling
+python -m pip install anylabeling
+anylabeling
+```
+
+For NVIDIA CUDA on Linux or Windows, install `anylabeling-gpu` in a fresh environment. Apple Silicon users can install `anylabeling[macos]` for CoreML. See [Installation](/docs/installation) and [Hardware Acceleration](/docs/gpu) for complete setup instructions.
+
+<p className="all-releases">
+  Need source archives, checksums, or an older version? <a href="https://github.com/vietanhdev/anylabeling/releases">View all GitHub releases →</a>
+</p>
+
+<style jsx>{`
+  .download-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+  .download-card {
+    display: flex;
+    min-height: 16rem;
+    flex-direction: column;
+    border: 1px solid rgb(228 228 231);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    background: linear-gradient(145deg, rgba(8, 145, 178, 0.08), transparent 55%);
+  }
+  :global(.dark) .download-card {
+    border-color: rgb(63 63 70);
+    background: linear-gradient(145deg, rgba(8, 145, 178, 0.16), rgba(24, 24, 27, 0.4) 55%);
+  }
+  .platform {
+    margin: 0 0 0.4rem;
+    color: rgb(8 145 178);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .download-card h2 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  .download-card > p:not(.platform) {
+    color: rgb(82 82 91);
+    line-height: 1.6;
+  }
+  :global(.dark) .download-card > p:not(.platform) {
+    color: rgb(161 161 170);
+  }
+  .actions {
+    display: grid;
+    gap: 0.65rem;
+    margin-top: auto;
+  }
+  .actions a {
+    display: block;
+    border-radius: 0.6rem;
+    padding: 0.7rem 0.9rem;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 650;
+    text-decoration: none;
+  }
+  .primary {
+    background: rgb(8 145 178);
+    color: white;
+  }
+  .primary:hover {
+    background: rgb(14 116 144);
+  }
+  .secondary {
+    border: 1px solid rgb(161 161 170);
+    color: inherit;
+  }
+  .secondary:hover {
+    background: rgba(113, 113, 122, 0.1);
+  }
+  .release-note {
+    border-left: 4px solid rgb(8 145 178);
+    border-radius: 0.35rem;
+    padding: 1rem 1.2rem;
+    background: rgba(8, 145, 178, 0.08);
+    line-height: 1.6;
+  }
+  .all-releases {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgb(228 228 231);
+  }
+  @media (max-width: 900px) {
+    .download-grid {
+      grid-template-columns: 1fr;
+    }
+    .download-card {
+      min-height: auto;
+    }
+  }
+`}</style>

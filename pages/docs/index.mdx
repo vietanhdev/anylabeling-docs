@@ -11,14 +11,15 @@
 <a href="https://github.com/vietanhdev/anylabeling/blob/master/LICENSE"><img src="https://img.shields.io/github/license/vietanhdev/anylabeling.svg" alt="license"></img></a>
 <a href="https://github.com/vietanhdev/anylabeling/issues"><img src="https://isitmaintained.com/badge/open/vietanhdev/anylabeling.svg" alt="open issues"></img></a>
 <a href="https://pypi.org/project/anylabeling/"><img src="https://pepy.tech/badge/anylabeling" alt="Pypi Downloads"></img></a>
-<a href="https://anylearning.nrl.ai/"><img src="https://img.shields.io/badge/Read-Documentation-green" alt="Documentation"></img></a></div>
+<a href="https://anylabeling.nrl.ai/"><img src="https://img.shields.io/badge/Read-Documentation-green" alt="Documentation"></img></a></div>
 
 <a href="https://youtu.be/5qVJiYNX5Kk">
   <img alt="AnyLabeling" src="https://raw.githubusercontent.com/vietanhdev/anylabeling/master/assets/screenshot.png"/>
 </a>
 
 - **Youtube Demo:** [https://youtu.be/5qVJiYNX5Kk](https://youtu.be/5qVJiYNX5Kk)
-- **Documentation:** [https://anylearning.nrl.ai](https://anylearning.nrl.ai)
+- **Documentation:** [https://anylabeling.nrl.ai](https://anylabeling.nrl.ai)
+- **Current release:** [v0.4.42](https://github.com/vietanhdev/anylabeling/releases/tag/v0.4.42)
 
 **Features:**
 
@@ -29,7 +30,14 @@
   - **SAM 2** and **SAM 2.1** (Hiera-Tiny / Small / Base+ / Large)
   - **SAM 3** (ViT-H) — open-vocabulary segmentation with text prompts
 - [x] Text detection, recognition and KIE (Key Information Extraction) labeling.
-- [x] Multiple languages availables: English, Vietnamese, Chinese.
+- [x] Hardware acceleration with CUDA, CoreML, DirectML, OpenVINO, and vendor NPU providers.
+- [x] Multiple languages available: English, Vietnamese, Chinese.
+
+## Latest release
+
+AnyLabeling v0.4.42 provides checksum-verified and launch-tested CPU and accelerated binaries for Linux, Windows, and Apple Silicon macOS. It follows recent stability fixes for file dialogs, canvas state, 16-bit TIFF editing, invalid custom models, and SAM 3 packaging.
+
+See [Recent Releases](/docs/releases) for details and [Hardware Acceleration](/docs/gpu) for device setup.
 
 ## I. Install and run
 
@@ -43,7 +51,7 @@
 
 ### 2. Install from Pypi
 
-- Requirements: Python 3.10+. Recommended: Python 3.12.
+- Requirements: Python 3.11+. Recommended: Python 3.12.
 - Recommended: [Miniconda/Anaconda](https://docs.conda.io/en/latest/miniconda.html).
 
 - Create environment:
@@ -62,7 +70,7 @@ conda install -c conda-forge pyqt=6
 - Install anylabeling:
 
 ```bash
-pip install anylabeling # or pip install anylabeling-gpu for GPU support
+pip install anylabeling
 ```
 
 - Start labeling:
@@ -70,6 +78,8 @@ pip install anylabeling # or pip install anylabeling-gpu for GPU support
 ```bash
 anylabeling
 ```
+
+For NVIDIA CUDA on Linux or Windows, use a fresh environment and install `anylabeling-gpu`. Apple Silicon users can install `anylabeling[macos]` for CoreML support. See [How to Install?](/docs/installation) for complete instructions.
 
 ## II. Development
 
@@ -103,7 +113,7 @@ bash build_executable.sh
 
 ## IV. Contribution
 
-If you want to contribute to **AnyLabeling**, please read [Contribution Guidelines](https://anylearning.nrl.ai/docs/contribution).
+If you want to contribute to **AnyLabeling**, please read [Contribution Guidelines](https://anylabeling.nrl.ai/docs/contribution).
 
 ## V. Star history
 

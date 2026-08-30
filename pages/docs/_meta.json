@@ -5,6 +5,7 @@
   },
   "index": "Introduction",
   "installation": "How to Install?",
+  "releases": "Recent Releases",
   "Auto Labeling": {
     "type": "separator",
     "title": "Auto Labeling"
@@ -13,7 +14,7 @@
   "sam": "Segment Anything Model (SAM)",
   "samexporter": "SAMExporter (ONNX Export)",
   "yolo": "YOLO Models",
-  "gpu": "GPU Acceleration",
+  "gpu": "Hardware Acceleration",
   "custom-models": "Loading Custom Models",
   "Labeling Tasks": {
     "type": "separator",

@@ -1,28 +1,121 @@
-# GPU Acceleration for Model Infererence
+# Hardware Acceleration
 
-GPU acceleration is available for model inference to speed up the process. To enable this feature, you will need a GPU with CUDA support and use corresponding version of AnyLabeling.
+AnyLabeling v0.4.39 and newer select ONNX Runtime execution providers consistently across operating systems. Every accelerated provider is followed by CPU fallback when the installed runtime supports it.
 
-## For PyPi Installation
+## Recommended setup
 
-Install the GPU version of AnyLabeling with the following command:
+The easiest supported configurations are:
+
+| Hardware | Install or artifact | Device setting |
+| --- | --- | --- |
+| NVIDIA GPU on Linux/Windows | `anylabeling-gpu` or a `GPU-x64` binary | Automatic, or `CUDA` |
+| Apple Silicon | `anylabeling[macos]` or a macOS `GPU` ZIP | Automatic in the GPU build, or `COREML` |
+| Windows GPU through DirectML | Replace ONNX Runtime with `onnxruntime-directml` | `DIRECTML` |
+| Intel CPU/GPU/NPU | Replace ONNX Runtime with `onnxruntime-openvino` | `OPENVINO` or `INTEL_NPU` |
+
+Keep each runtime in a separate environment. Installing multiple ONNX Runtime distributions together can overwrite shared package files.
+
+## Select a device
+
+Set `ANYLABELING_DEVICE` before starting the application.
+
+Linux or macOS:
 
 ```bash
-pip install anylabeling-gpu
+export ANYLABELING_DEVICE=CUDA
+anylabeling
 ```
 
-## For Binary Installation
+Windows PowerShell:
 
-If you download the binary version of AnyLabeling from the [Releases](https://github.com/vietanhdev/anylabeling/releases), please choose the binary file with `GPU` in its name.
-
-![GPU Versions](/images/gpu-versions.png)
-
-## For Source Installation
-
-If you are using AnyLabeling from source, please set `__preferred_device__` to `GPU` in `anylabeling/app_info.py` file to enable GPU acceleration. The final code should look like this:
-
-```python
-__appname__ = "AnyLabeling"
-__appdescription__ = "Effortless data labeling with AI support"
-__version__ = "0.2.19"
-__preferred_device__ = "GPU"  # GPU or CPU
+```powershell
+$env:ANYLABELING_DEVICE = "DIRECTML"
+anylabeling
 ```
+
+Supported values are:
+
+| Value | ONNX Runtime provider | Notes |
+| --- | --- | --- |
+| `CPU` | CPU | Default for the CPU distribution |
+| `GPU` or `AUTO` | Best available provider | Uses AnyLabeling's deterministic priority order |
+| `CUDA` | NVIDIA CUDA | Default for Linux/Windows GPU builds |
+| `COREML` | Apple CoreML | Apple Silicon acceleration |
+| `DIRECTML` or `DML` | Microsoft DirectML | Requires a DirectML-enabled runtime |
+| `OPENVINO` | Intel OpenVINO | Intel CPU/GPU or runtime-selected hardware |
+| `TENSORRT` | NVIDIA TensorRT | Explicit opt-in; falls back through CUDA and CPU |
+| `ROCM` / `MIGRAPHX` | AMD GPU providers | Requires a compatible custom runtime |
+| `WEBGPU` | WebGPU | Requires a runtime exposing the provider |
+
+If a requested provider is unavailable, AnyLabeling logs a warning and uses CPU rather than failing startup.
+
+## NVIDIA CUDA
+
+Create a fresh environment and install the GPU distribution:
+
+```bash
+conda create -n anylabeling-cuda python=3.12
+conda activate anylabeling-cuda
+python -m pip install anylabeling-gpu
+```
+
+`anylabeling-gpu` currently pins ONNX Runtime below 1.27 for CUDA 12 driver compatibility and installs the pip CUDA/cuDNN libraries. TensorRT is deliberately not selected automatically, even when ONNX Runtime advertises it, because the additional TensorRT libraries and model compatibility are not guaranteed.
+
+## DirectML
+
+DirectML can use supported Windows GPUs, including non-NVIDIA devices:
+
+```powershell
+conda create -n anylabeling-directml python=3.12
+conda activate anylabeling-directml
+python -m pip install anylabeling
+python -m pip uninstall -y onnxruntime
+python -m pip install onnxruntime-directml
+$env:ANYLABELING_DEVICE = "DIRECTML"
+anylabeling
+```
+
+ONNX Runtime classifies DirectML as being in sustained engineering, so model/operator support may differ from CUDA.
+
+## Intel OpenVINO and NPU
+
+For Intel hardware, use the OpenVINO runtime in its own environment:
+
+```bash
+conda create -n anylabeling-openvino python=3.12
+conda activate anylabeling-openvino
+python -m pip install anylabeling
+python -m pip uninstall -y onnxruntime
+python -m pip install onnxruntime-openvino
+export ANYLABELING_DEVICE=OPENVINO
+anylabeling
+```
+
+On an Intel Core Ultra system with a supported NPU, use `INTEL_NPU`. AnyLabeling passes `device_type=NPU` to OpenVINO.
+
+## Other NPUs
+
+AnyLabeling can request providers supplied by vendor-specific ONNX Runtime builds:
+
+| Hardware | Device value | Provider behavior |
+| --- | --- | --- |
+| Intel Core Ultra NPU | `INTEL_NPU` or `OPENVINO_NPU` | OpenVINO with `device_type=NPU` |
+| Qualcomm Snapdragon X NPU | `QUALCOMM_NPU` or `SNAPDRAGON_NPU` | QNN with the HTP backend |
+| AMD Ryzen AI NPU | `AMD_NPU` or `RYZENAI` | Vitis AI |
+| Huawei Ascend | `ASCEND_NPU` or `CANN` | CANN |
+
+`NPU` chooses the first available provider in the order QNN, OpenVINO, Vitis AI, then CANN. Prefer the vendor-specific value when you know the target.
+
+These options require the matching vendor runtime, drivers, supported operating system, and a model whose operators and data types are supported by that provider. Qualcomm HTP generally requires a QDQ-quantized model. Provider availability alone does not guarantee that every AnyLabeling model can run entirely on the accelerator.
+
+Refer to the official ONNX Runtime documentation for [execution providers](https://onnxruntime.ai/docs/execution-providers/), [OpenVINO](https://onnxruntime.ai/docs/execution-providers/OpenVINO-ExecutionProvider.html), and [QNN](https://onnxruntime.ai/docs/execution-providers/QNN-ExecutionProvider.html).
+
+## Confirm the selected provider
+
+Run this inside the same environment as AnyLabeling:
+
+```bash
+python -c "from anylabeling.services.auto_labeling.runtime import get_onnx_providers; print(get_onnx_providers())"
+```
+
+The first item is the preferred provider. `CPUExecutionProvider` at the end is the fallback.

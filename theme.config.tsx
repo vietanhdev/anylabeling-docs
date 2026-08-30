@@ -32,7 +32,7 @@ const config: DocsThemeConfig = {
   project: {
     link: "https://github.com/vietanhdev/anylabeling",
   },
-  docsRepositoryBase: "https://github.com/vietanhdev/anylabeling-docs",
+  docsRepositoryBase: "https://github.com/nrl-ai/anylabeling-docs",
   useNextSeoProps() {
     const { asPath } = useRouter();
     if (asPath !== "/") {
@@ -47,8 +47,8 @@ const config: DocsThemeConfig = {
     const { route } = useRouter();
     const socialCard =
       route === "/" || !title
-        ? "https://anylearning.nrl.ai/og.jpeg"
-        : `https://anylearning.nrl.ai/api/og?title=${title}`;
+        ? "https://anylabeling.nrl.ai/og.jpeg"
+        : `https://anylabeling.nrl.ai/api/og?title=${title}`;
 
     return (
       <>
@@ -61,18 +61,18 @@ const config: DocsThemeConfig = {
           content="Effortless AI-assisted data labeling with AI support from Segment Anything and YOLO!"
         />
         <meta
-          name="og:description"
+          property="og:description"
           content="Effortless AI-assisted data labeling with AI support from Segment Anything and YOLO!"
         />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content={socialCard} />
-        <meta name="twitter:site:domain" content="anylearning.nrl.ai" />
-        <meta name="twitter:url" content="https://anylearning.nrl.ai" />
+        <meta name="twitter:site:domain" content="anylabeling.nrl.ai" />
+        <meta name="twitter:url" content="https://anylabeling.nrl.ai" />
         <meta
-          name="og:title"
+          property="og:title"
           content={title ? title + " – AnyLabeling" : "AnyLabeling"}
         />
-        <meta name="og:image" content={socialCard} />
+        <meta property="og:image" content={socialCard} />
         <meta name="apple-mobile-web-app-title" content="AnyLabeling" />
         <link rel="icon" href="/favicon.png" type="image/png" />
         <link
@@ -85,10 +85,14 @@ const config: DocsThemeConfig = {
     );
   },
   banner: {
-    key: "anylearning-beta",
+    key: "anylearning-oss",
     text: (
-      <a href="https://anylearning.nrl.ai" target="_blank" rel="noreferrer">
-        🎉 Use AnyLearning for both data labeling and model training! 🎉
+      <a
+        href="https://github.com/nrl-ai/anylearning-oss"
+        target="_blank"
+        rel="noreferrer"
+      >
+        AnyLearning is now open source: label data and train models offline →
       </a>
     ),
   },
