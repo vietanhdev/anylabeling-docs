@@ -1,0 +1,38 @@
+# Recent Releases
+
+## v0.4.42 — current stable release
+
+[v0.4.42](https://github.com/vietanhdev/anylabeling/releases/tag/v0.4.42) replaced the affected v0.4.40 binaries and tightened release validation:
+
+- Preserves required PyInstaller symlinks in macOS ZIP archives.
+- Bundles the matching `libexpat` in Linux frozen applications.
+- Launch-tests extracted macOS archives and frozen Linux/Windows applications before upload.
+- Publishes six CPU/accelerated artifacts for Linux, Windows, and Apple Silicon macOS.
+
+Avoid the v0.4.40 macOS and Linux artifacts. The v0.4.41 publication was cancelled during validation; use v0.4.42 or newer.
+
+## v0.4.39 — cross-platform accelerators
+
+[v0.4.39](https://github.com/vietanhdev/anylabeling/releases/tag/v0.4.39) introduced deterministic ONNX Runtime provider selection:
+
+- NVIDIA CUDA on Linux and Windows, including packaged pip CUDA/cuDNN runtime libraries.
+- CoreML on Apple Silicon.
+- DirectML, OpenVINO, TensorRT, ROCm, MIGraphX, WebGPU, and vendor NPU provider aliases.
+- Explicit selection with `ANYLABELING_DEVICE` and CPU fallback when a requested provider is unavailable.
+- Intel OpenVINO NPU and Qualcomm QNN/HTP provider options.
+
+See [Hardware Acceleration](./gpu) for installation and device selection. No binary artifacts were published for v0.4.39; use v0.4.42 or newer for installers containing this work.
+
+## v0.4.37–v0.4.38 — stability and model fixes
+
+These releases fixed several user-visible failures:
+
+- The **Ctrl+O** file dialog crash caused by unscoped PyQt6 enums.
+- Crashes from stale canvas selections and shape movement at image boundaries.
+- Empty configuration files now fall back to defaults.
+- Invalid SVG files are no longer advertised as supported images.
+- Brightness and contrast editing supports 16-bit TIFF images.
+- Escape and drawing-mode transitions no longer hide or corrupt the labeling workspace.
+- SAM 3 tokenizer data is included in frozen applications.
+
+For every published artifact, prefer the [latest release](https://github.com/vietanhdev/anylabeling/releases/latest) unless a project requires a pinned version.

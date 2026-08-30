@@ -1,21 +1,27 @@
-# Documentation for AnyLabeling
+# AnyLabeling documentation
 
-<p align="center">
-  <img alt="AnyLabeling" style="width: 128px; max-width: 100%; height: auto;" src="https://user-images.githubusercontent.com/18329471/232250539-2b15b9ee-5593-41d0-ba22-e0442f314cce.png"/>
-  <h1 align="center">🌟 AnyLabeling 🌟</h1>
-  <p align="center">Effortless data labeling with AI support from <b>YOLO</b> and <b>Segment Anything</b>!<p>
-  <p align="center"><b>AnyLabeling = LabelImg + Labelme + Improved UI + Auto-labeling</b><p>
-</p>
+This repository contains the source for the [AnyLabeling documentation](https://anylabeling.nrl.ai/).
 
-![](https://i.imgur.com/waxVImv.png)
+AnyLabeling combines image annotation tools with AI-assisted labeling from YOLO and the Segment Anything family, including SAM, MobileSAM, SAM 2/2.1, and SAM 3.
 
-[![PyPI](https://img.shields.io/pypi/v/anylabeling)](https://pypi.org/project/anylabeling)
-[![license](https://img.shields.io/github/license/vietanhdev/anylabeling.svg)](https://github.com/vietanhdev/anylabeling/blob/master/LICENSE)
-[![open issues](https://isitmaintained.com/badge/open/vietanhdev/anylabeling.svg)](https://github.com/vietanhdev/anylabeling/issues)
-[![Pypi Downloads](https://pepy.tech/badge/anylabeling)](https://pypi.org/project/anylabeling/)
+## Current release
 
-<a href="https://youtu.be/5qVJiYNX5Kk">
-  <img alt="AnyLabeling" src="https://user-images.githubusercontent.com/18329471/231320488-2f8133bc-6b51-48f8-82a6-dd3b267f5156.png"/>
-</a>
+The current stable release is [v0.4.42](https://github.com/vietanhdev/anylabeling/releases/tag/v0.4.42). It provides tested CPU and accelerated binaries for Linux, Windows, and Apple Silicon macOS. Recent releases also added deterministic ONNX Runtime accelerator selection, CUDA runtime packaging, CoreML support, and opt-in DirectML, OpenVINO, TensorRT, and vendor NPU providers.
 
-[https://github.com/vietanhdev/anylabeling](https://github.com/vietanhdev/anylabeling)
+See the documentation for:
+
+- [Installation](https://anylabeling.nrl.ai/docs/installation)
+- [Hardware acceleration](https://anylabeling.nrl.ai/docs/gpu)
+- [Recent releases](https://anylabeling.nrl.ai/docs/releases)
+- [Loading custom models](https://anylabeling.nrl.ai/docs/custom-models)
+
+The application source, issue tracker, and binary releases are in [vietanhdev/anylabeling](https://github.com/vietanhdev/anylabeling).
+
+## Develop this site
+
+```bash
+pnpm install --frozen-lockfile
+pnpm build
+```
+
+Use `pnpm dev` for a local development server.

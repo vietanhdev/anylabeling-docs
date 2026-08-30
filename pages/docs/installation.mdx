@@ -1,41 +1,88 @@
 # Installation
 
-There are three ways to install AnyLabeling.
+The current stable release is [v0.4.42](https://github.com/vietanhdev/anylabeling/releases/tag/v0.4.42). Python installations require Python 3.11 or newer; Python 3.12 is recommended.
 
-## 1. Install from PyPI
+> Create a dedicated AnyLabeling environment. ONNX Runtime CPU and hardware-specific distributions replace one another and should not be mixed in the same environment.
+
+## 1. Download a binary
+
+Use the [Download page](/download) for direct links, or choose the correct artifact from the [latest GitHub release](https://github.com/vietanhdev/anylabeling/releases/latest):
+
+| Platform | CPU | Accelerated |
+| --- | --- | --- |
+| Linux x64 | `AnyLabeling-Linux-CPU-x64` | `AnyLabeling-Linux-GPU-x64` (NVIDIA CUDA) |
+| Windows x64 | `AnyLabeling-Windows-CPU-x64.exe` | `AnyLabeling-Windows-GPU-x64.exe` (NVIDIA CUDA) |
+| Apple Silicon macOS | `AnyLabeling-macOS-CPU.zip` | `AnyLabeling-macOS-GPU.zip` (CoreML) |
+
+The six v0.4.42 artifacts were checksum-verified and launch-tested on their target operating systems. Do not use the v0.4.40 macOS or Linux artifacts; they were superseded because of packaging defects.
+
+On Linux, make the downloaded file executable:
 
 ```bash
-pip install anylabeling
+chmod +x AnyLabeling-Linux-CPU-x64
+./AnyLabeling-Linux-CPU-x64
 ```
 
-Or with GPU support:
+On macOS, extract the ZIP without flattening or replacing its symlinks, then launch the included binary:
 
 ```bash
-pip install anylabeling-gpu
+ditto -x -k AnyLabeling-macOS-CPU.zip .
+./AnyLabeling-macOS-CPU/anylabeling
 ```
 
-Run AnyLabeling:
+Use the `GPU` archive instead to enable CoreML. If macOS blocks the first launch, open **System Settings → Privacy & Security** and allow the application.
+
+## 2. Install from PyPI
+
+Create and activate an isolated environment:
 
 ```bash
+conda create -n anylabeling python=3.12
+conda activate anylabeling
+```
+
+### CPU
+
+```bash
+python -m pip install anylabeling
 anylabeling
 ```
 
-## 2. Install from binary distribution
+### NVIDIA CUDA on Linux or Windows
 
-Download the latest binary distribution from [Releases](https://github.com/vietanhdev/anylabeling/releases).
+Use the GPU distribution in a fresh environment:
 
-**Note:** Choose versions with `-GPU` for GPU support.
+```bash
+python -m pip install anylabeling-gpu
+anylabeling
+```
+
+The GPU distribution includes pip-managed CUDA 12 and cuDNN runtime libraries. A compatible NVIDIA driver is required, but a system CUDA toolkit is not.
+
+### Apple Silicon CoreML
+
+Install Qt through Conda and the macOS extra through pip:
+
+```bash
+conda install -c conda-forge pyqt=6
+python -m pip install "anylabeling[macos]"
+export ANYLABELING_DEVICE=COREML
+anylabeling
+```
+
+See [Hardware Acceleration](./gpu) for DirectML, OpenVINO, TensorRT, and NPU setup.
 
 ## 3. Install from source
 
 ```bash
-git clone https://github.com/vietanhdev/anylabeling
+git clone https://github.com/vietanhdev/anylabeling.git
 cd anylabeling
-pip install .
+python -m pip install -e .
+anylabeling
 ```
 
-Run AnyLabeling:
+For NVIDIA CUDA development, replace the final install command with:
 
 ```bash
-anylabeling
+python -m pip install -e ".[gpu]"
 ```
